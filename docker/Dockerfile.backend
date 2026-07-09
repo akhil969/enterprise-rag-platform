@@ -1,0 +1,20 @@
+# Backend service Dockerfile (FastAPI)
+# NOTE: PR #1 skeleton only — backend app code lands in PR #2.
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# System deps (kept minimal; add build-essential etc. if a later PR needs compiled wheels)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY backend/ /app/backend/
+
+EXPOSE 8000
+
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
