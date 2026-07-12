@@ -1,14 +1,13 @@
 from fastapi import FastAPI
 
-app = FastAPI(
-    title="Enterprise Knowledge Intelligence Platform",
-    version="0.1.0"
-)
+from backend.routes import documents, search
+
+app = FastAPI(title="EKIP")
+
+app.include_router(documents.router)
+app.include_router(search.router)
+
 
 @app.get("/")
-def root():
-    return {"message": "EKIP API is running"}
-
-@app.get("/health")
 def health():
-    return {"status": "healthy"}
+    return {"status": "running"}
